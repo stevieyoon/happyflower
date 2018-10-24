@@ -4,7 +4,7 @@ include_once('./_common.php');
 $mb_id  = trim($_GET['mb_id']);
 $mb_md5 = trim($_GET['mb_md5']);
 
-$sql = " select mb_id, mb_email_certify2 from {$g5['member_table']} where mb_id = '{$mb_id}' ";
+$sql = " select mb_id, mb_email_certify2, mb_leave_date, mb_intercept_date from {$g5['member_table']} where mb_id = '{$mb_id}' and site_id = '{$site_id}' ";
 $row = sql_fetch($sql);
 if (!$row['mb_id'])
     alert('존재하는 회원이 아닙니다.', G5_URL);

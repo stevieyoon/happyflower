@@ -1805,7 +1805,7 @@ function get_item_sendcost($it_id, $price, $qty, $cart_id)
                 from {$g5['g5_shop_cart_table']}
                 where it_id = '$it_id'
                   and od_id = '$cart_id'
-				  and site_id = '$site_id'
+                  and site_id = '$site_id'
                 order by ct_id
                 limit 1 ";
     $ct = sql_fetch($sql);
@@ -2230,7 +2230,7 @@ function get_wishlist_datas_count($mb_id='')
 
     $wishlist_datas = get_wishlist_datas($mb_id, true);
 
-    return count($wishlist_datas);
+    return is_array($wishlist_datas) ? count($wishlist_datas) : 0;
 }
 
 //각 상품에 대한 위시리스트 담은 갯수 출력

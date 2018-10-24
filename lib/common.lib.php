@@ -713,7 +713,9 @@ function get_group($gr_id)
 // 회원 정보를 얻는다.
 function get_member($mb_id, $fields='*')
 {
-    global $g5;
+    global $g5, $site_id;
+
+    $mb_id = preg_replace("/[^0-9a-z_]+/i", "", $mb_id);
 
     //return sql_fetch(" select $fields from {$g5['member_table']} where mb_id = TRIM('$mb_id') and site_id = '{$config['site_id']}' ");
     return sql_fetch(" select $fields from {$g5['member_table']} where mb_id = TRIM('$mb_id') ");
@@ -2075,13 +2077,21 @@ function abs_ip2long($ip='')
 
 function get_selected($field, $value)
 {
-    return ($field==$value) ? ' selected="selected"' : '';
+    if( is_int($value) ){
+        return ((int) $field===$value) ? ' selected="selected"' : '';
+    }
+
+    return ($field===$value) ? ' selected="selected"' : '';
 }
 
 
 function get_checked($field, $value)
 {
-    return ($field==$value) ? ' checked="checked"' : '';
+    if( is_int($value) ){
+        return ((int) $field===$value) ? ' checked="checked"' : '';
+    }
+
+    return ($field===$value) ? ' checked="checked"' : '';
 }
 
 
@@ -2685,7 +2695,7 @@ function get_qa_config($fld='*')
 
 // get_sock 함수 대체
 if (!function_exists("get_sock")) {
-    function get_sock($url)
+    function get_sock($url, $timeout=30)
     {
         // host 와 uri 를 분리
         //if (ereg("http://([a-zA-Z0-9_\-\.]+)([^<]*)", $url, $res))
@@ -2696,7 +2706,7 @@ if (!function_exists("get_sock")) {
         }
 
         // 80번 포트로 소캣접속 시도
-        $fp = fsockopen ($host, 80, $errno, $errstr, 30);
+        $fp = fsockopen ($host, 80, $errno, $errstr, $timeout);
         if (!$fp)
         {
             //die("$errstr ($errno)\n");
@@ -2900,6 +2910,14 @@ function clean_xss_tags($str)
     return $str;
 }
 
+// XSS 어트리뷰트 태그 제거
+function clean_xss_attributes($str)
+{
+    $str = preg_replace('#(onabort|onactivate|onafterprint|onafterupdate|onbeforeactivate|onbeforecopy|onbeforecut|onbeforedeactivate|onbeforeeditfocus|onbeforepaste|onbeforeprint|onbeforeunload|onbeforeupdate|onblur|onbounce|oncellchange|onchange|onclick|oncontextmenu|oncontrolselect|oncopy|oncut|ondataavaible|ondatasetchanged|ondatasetcomplete|ondblclick|ondeactivate|ondrag|ondragdrop|ondragend|ondragenter|ondragleave|ondragover|ondragstart|ondrop|onerror|onerrorupdate|onfilterupdate|onfinish|onfocus|onfocusin|onfocusout|onhelp|onkeydown|onkeypress|onkeyup|onlayoutcomplete|onload|onlosecapture|onmousedown|onmouseenter|onmouseleave|onmousemove|onmoveout|onmouseover|onmouseup|onmousewheel|onmove|onmoveend|onmovestart|onpaste|onpropertychange|onreadystatechange|onreset|onresize|onresizeend|onresizestart|onrowexit|onrowsdelete|onrowsinserted|onscroll|onselect|onselectionchange|onselectstart|onstart|onstop|onsubmit|onunload)\\s*=\\s*\\\?".*?"#is', '', $str);
+
+    return $str;
+}
+
 // unescape nl 얻기
 function conv_unescape_nl($str)
 {
@@ -2914,8 +2932,9 @@ function member_delete($mb_id)
 {
     global $config;
     global $g5;
+    global $site_id;
 
-    $sql = " select mb_name, mb_nick, mb_ip, mb_recommend, mb_memo, mb_level from {$g5['member_table']} where mb_id= '".$mb_id."' ";
+    $sql = " select mb_name, mb_nick, mb_ip, mb_recommend, mb_memo, mb_level from {$g5['member_table']} where mb_id= '".$mb_id."' and site_id = '{$site_id}' ";
     $mb = sql_fetch($sql);
 
     // 이미 삭제된 회원은 제외
@@ -2923,35 +2942,35 @@ function member_delete($mb_id)
         return;
 
     if ($mb['mb_recommend']) {
-        $row = sql_fetch(" select count(*) as cnt from {$g5['member_table']} where mb_id = '".addslashes($mb['mb_recommend'])."' ");
+        $row = sql_fetch(" select count(*) as cnt from {$g5['member_table']} where mb_id = '".addslashes($mb['mb_recommend'])."' and site_id = '{$site_id}' ");
         if ($row['cnt'])
             insert_point($mb['mb_recommend'], $config['cf_recommend_point'] * (-1), $mb_id.'님의 회원자료 삭제로 인한 추천인 포인트 반환', "@member", $mb['mb_recommend'], $mb_id.' 추천인 삭제');
     }
 
     // 회원자료는 정보만 없앤 후 아이디는 보관하여 다른 사람이 사용하지 못하도록 함 : 061025
-    $sql = " update {$g5['member_table']} set mb_password = '', mb_level = 1, mb_email = '', mb_homepage = '', mb_tel = '', mb_hp = '', mb_zip1 = '', mb_zip2 = '', mb_addr1 = '', mb_addr2 = '', mb_birth = '', mb_sex = '', mb_signature = '', mb_memo = '".date('Ymd', G5_SERVER_TIME)." 삭제함\n{$mb['mb_memo']}' where mb_id = '{$mb_id}' ";
+    $sql = " update {$g5['member_table']} set mb_password = '', mb_level = 1, mb_email = '', mb_homepage = '', mb_tel = '', mb_hp = '', mb_zip1 = '', mb_zip2 = '', mb_addr1 = '', mb_addr2 = '', mb_birth = '', mb_sex = '', mb_signature = '', mb_memo = '".date('Ymd', G5_SERVER_TIME)." 삭제함\n{$mb['mb_memo']}' where mb_id = '{$mb_id}' and site_id = '{$site_id}' ";
     sql_query($sql);
 
     // 포인트 테이블에서 삭제
-    sql_query(" delete from {$g5['point_table']} where mb_id = '$mb_id' ");
+    sql_query(" delete from {$g5['point_table']} where mb_id = '$mb_id' and site_id = '{$site_id}' ");
 
     // 그룹접근가능 삭제
-    sql_query(" delete from {$g5['group_member_table']} where mb_id = '$mb_id' ");
+    sql_query(" delete from {$g5['group_member_table']} where mb_id = '$mb_id' and site_id = '{$site_id}' ");
 
     // 쪽지 삭제
-    sql_query(" delete from {$g5['memo_table']} where me_recv_mb_id = '$mb_id' or me_send_mb_id = '$mb_id' ");
+    sql_query(" delete from {$g5['memo_table']} where me_recv_mb_id = '$mb_id' or me_send_mb_id = '$mb_id' and site_id = '{$site_id}' ");
 
     // 스크랩 삭제
-    sql_query(" delete from {$g5['scrap_table']} where mb_id = '$mb_id' ");
+    sql_query(" delete from {$g5['scrap_table']} where mb_id = '$mb_id' and site_id = '{$site_id}' ");
 
     // 관리권한 삭제
-    sql_query(" delete from {$g5['auth_table']} where mb_id = '$mb_id' ");
+    sql_query(" delete from {$g5['auth_table']} where mb_id = '$mb_id' and site_id = '{$site_id}' ");
 
     // 그룹관리자인 경우 그룹관리자를 공백으로
-    sql_query(" update {$g5['group_table']} set gr_admin = '' where gr_admin = '$mb_id' ");
+    sql_query(" update {$g5['group_table']} set gr_admin = '' where gr_admin = '$mb_id' and site_id = '{$site_id}' ");
 
     // 게시판관리자인 경우 게시판관리자를 공백으로
-    sql_query(" update {$g5['board_table']} set bo_admin = '' where bo_admin = '$mb_id' ");
+    sql_query(" update {$g5['board_table']} set bo_admin = '' where bo_admin = '$mb_id' and site_id = '{$site_id}' ");
 
     //소셜로그인에서 삭제 또는 해제
     if(function_exists('social_member_link_delete')){
@@ -2997,7 +3016,7 @@ function replace_filename($name)
 // 아이코드 사용자정보
 function get_icode_userinfo($id, $pass)
 {
-    $res = get_sock('http://www.icodekorea.com/res/userinfo.php?userid='.$id.'&userpw='.$pass);
+    $res = get_sock('http://www.icodekorea.com/res/userinfo.php?userid='.$id.'&userpw='.$pass, 2);
     $res = explode(';', $res);
     $userinfo = array(
         'code'      => $res[0], // 결과코드
