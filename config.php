@@ -4,7 +4,7 @@
     상수 선언
 ********************/
 
-define('G5_VERSION', '그누보드5');aaaaaaaaaaaaaaaaaaaa
+define('G5_VERSION', '그누보드5');aaaaaaaaaaa111111111111aaaaaaaaa
 define('G5_GNUBOARD_VER', '5.3.1.9');
 define('G5_YOUNGCART_VER', '5.3.1.9');
 
