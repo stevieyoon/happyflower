@@ -1,0 +1,131 @@
+* About to connect() to rest.18002019.com port 80 (#0)
+*   Trying 52.231.201.89... * connected
+* Connected to rest.18002019.com (52.231.201.89) port 80 (#0)
+> POST /v1/order_reg HTTP/1.1
+Host: rest.18002019.com
+Accept: */*
+Authorization:F4DD8B2E-6AAB-40B8-9D26-C77EF0F6B9EB
+Content-type: Application/json
+Content-Length: 913
+
+< HTTP/1.1 200 OK
+< Cache-Control: private
+< Content-Type: text/html; charset=UTF-8
+< Server: Microsoft-IIS/8.5
+< X-AspNet-Version: 4.0.30319
+< X-Powered-By: ASP.NET
+< Access-Control-Allow-Origin: *
+< Date: Fri, 01 Jun 2018 09:02:03 GMT
+< Content-Length: 37
+< 
+* Connection #0 to host rest.18002019.com left intact
+* Closing connection #0
+* About to connect() to rest.18002019.com port 80 (#0)
+*   Trying 52.231.201.89... * connected
+* Connected to rest.18002019.com (52.231.201.89) port 80 (#0)
+> POST /v1/order_reg HTTP/1.1
+Host: rest.18002019.com
+Accept: */*
+Authorization:F4DD8B2E-6AAB-40B8-9D26-C77EF0F6B9EB
+Content-type: Application/json
+Content-Length: 913
+
+< HTTP/1.1 200 OK
+< Cache-Control: private
+< Content-Type: text/html; charset=UTF-8
+< Server: Microsoft-IIS/8.5
+< X-AspNet-Version: 4.0.30319
+< X-Powered-By: ASP.NET
+< Access-Control-Allow-Origin: *
+< Date: Fri, 01 Jun 2018 09:03:03 GMT
+< Content-Length: 37
+< 
+* Connection #0 to host rest.18002019.com left intact
+* Closing connection #0
+* About to connect() to rest.18002019.com port 80 (#0)
+*   Trying 52.231.201.89... * connected
+* Connected to rest.18002019.com (52.231.201.89) port 80 (#0)
+> POST /v1/order_reg HTTP/1.1
+Host: rest.18002019.com
+Accept: */*
+Authorization:F4DD8B2E-6AAB-40B8-9D26-C77EF0F6B9EB
+Content-type: Application/json
+Content-Length: 913
+
+< HTTP/1.1 200 OK
+< Cache-Control: private
+< Content-Type: text/html; charset=UTF-8
+< Server: Microsoft-IIS/8.5
+< X-AspNet-Version: 4.0.30319
+< X-Powered-By: ASP.NET
+< Access-Control-Allow-Origin: *
+< Date: Fri, 01 Jun 2018 09:04:02 GMT
+< Content-Length: 37
+< 
+* Connection #0 to host rest.18002019.com left intact
+* Closing connection #0
+* About to connect() to rest.18002019.com port 80 (#0)
+*   Trying 52.231.201.89... * connected
+* Connected to rest.18002019.com (52.231.201.89) port 80 (#0)
+> POST /v1/order_reg HTTP/1.1
+Host: rest.18002019.com
+Accept: */*
+Authorization:F4DD8B2E-6AAB-40B8-9D26-C77EF0F6B9EB
+Content-type: Application/json
+Content-Length: 913
+
+< HTTP/1.1 200 OK
+< Cache-Control: private
+< Content-Type: text/html; charset=UTF-8
+< Server: Microsoft-IIS/8.5
+< X-AspNet-Version: 4.0.30319
+< X-Powered-By: ASP.NET
+< Access-Control-Allow-Origin: *
+< Date: Fri, 01 Jun 2018 09:05:07 GMT
+< Content-Length: 37
+< 
+* Connection #0 to host rest.18002019.com left intact
+* Closing connection #0
+* About to connect() to rest.18002019.com port 80 (#0)
+*   Trying 52.231.201.89... * connected
+* Connected to rest.18002019.com (52.231.201.89) port 80 (#0)
+> POST /v1/order_reg HTTP/1.1
+Host: rest.18002019.com
+Accept: */*
+Authorization:F4DD8B2E-6AAB-40B8-9D26-C77EF0F6B9EB
+Content-type: Application/json
+Content-Length: 914
+
+< HTTP/1.1 200 OK
+< Cache-Control: private
+< Content-Type: text/html; charset=UTF-8
+< Server: Microsoft-IIS/8.5
+< X-AspNet-Version: 4.0.30319
+< X-Powered-By: ASP.NET
+< Access-Control-Allow-Origin: *
+< Date: Mon, 04 Jun 2018 05:01:07 GMT
+< Content-Length: 41
+< 
+* Connection #0 to host rest.18002019.com left intact
+* Closing connection #0
+PHP Warning:  include_once(/home/master/public_html/yoon/flower_connect.php): failed to open stream: No such file or directory in /home/master/public_html/extend/user.config.php on line 13
+
+Warning: include_once(/home/master/public_html/yoon/flower_connect.php): failed to open stream: No such file or directory in /home/master/public_html/extend/user.config.php on line 13
+PHP Warning:  include_once(): Failed opening '/home/master/public_html/yoon/flower_connect.php' for inclusion (include_path='.:/usr/share/pear:/usr/share/php') in /home/master/public_html/extend/user.config.php on line 13
+
+Warning: include_once(): Failed opening '/home/master/public_html/yoon/flower_connect.php' for inclusion (include_path='.:/usr/share/pear:/usr/share/php') in /home/master/public_html/extend/user.config.php on line 13
+PHP Fatal error:  Call to undefined function sql_connect_flower() in /home/master/public_html/extend/user.config.php on line 14
+
+Fatal error: Call to undefined function sql_connect_flower() in /home/master/public_html/extend/user.config.php on line 14
+PHP Warning:  include_once(/home/master/public_html/yoon/flower_connect.php): failed to open stream: No such file or directory in /home/master/public_html/extend/user.config.php on line 13
+
+Warning: include_once(/home/master/public_html/yoon/flower_connect.php): failed to open stream: No such file or directory in /home/master/public_html/extend/user.config.php on line 13
+PHP Warning:  include_once(): Failed opening '/home/master/public_html/yoon/flower_connect.php' for inclusion (include_path='.:/usr/share/pear:/usr/share/php') in /home/master/public_html/extend/user.config.php on line 13
+
+Warning: include_once(): Failed opening '/home/master/public_html/yoon/flower_connect.php' for inclusion (include_path='.:/usr/share/pear:/usr/share/php') in /home/master/public_html/extend/user.config.php on line 13
+PHP Fatal error:  Call to undefined function sql_connect_flower() in /home/master/public_html/extend/user.config.php on line 14
+
+Fatal error: Call to undefined function sql_connect_flower() in /home/master/public_html/extend/user.config.php on line 14
+PHP Fatal error:  Call to undefined function get_server_name() in /home/master/public_html/common.php on line 211
+
+Fatal error: Call to undefined function get_server_name() in /home/master/public_html/common.php on line 211
