@@ -42,7 +42,7 @@ if ($_POST['act_button'] == "선택수정") {
                             mb_certify = '".sql_real_escape_string($_POST['mb_certify'][$k])."',
                             mb_adult = '{$mb_adult}'
                         where mb_id = '".sql_real_escape_string($_POST['mb_id'][$k])."'
-                         and site_id = '{$site_id}' ";
+                         and site_id = '".sql_real_escape_string($_POST['mb_id'][$k])."' ";
             sql_query($sql);
         }
     }

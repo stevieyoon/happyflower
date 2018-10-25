@@ -717,8 +717,13 @@ function get_member($mb_id, $fields='*')
 
     $mb_id = preg_replace("/[^0-9a-z_]+/i", "", $mb_id);
 
-    //return sql_fetch(" select $fields from {$g5['member_table']} where mb_id = TRIM('$mb_id') and site_id = '{$config['site_id']}' ");
-    return sql_fetch(" select $fields from {$g5['member_table']} where mb_id = TRIM('$mb_id') ");
+    // 회원 정보를 조회 할 경우 master 사이트에서 충돌을 방지하기 위해 site_id 에 mb_id 를 대입 (gnuwiz)
+    $user_site_id = $site_id;
+    if ($site_id == "master") {
+        $user_site_id = $mb_id;
+    }
+    return sql_fetch(" select $fields from {$g5['member_table']} where mb_id = TRIM('$mb_id') and site_id = '{$user_site_id}' ");
+    //return sql_fetch(" select $fields from {$g5['member_table']} where mb_id = TRIM('$mb_id') ");
 }
 
 
