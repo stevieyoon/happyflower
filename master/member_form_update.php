@@ -155,8 +155,8 @@ if ($w == '')
 						cf_stipulation = '해당 홈페이지에 맞는 회원가입약관을 입력합니다.',
 						cf_privacy = '해당 홈페이지에 맞는 개인정보처리방침을 입력합니다.',
 						cf_captcha = 'kcaptcha',
-						site_id = '$mb_id',
-						domain_1 = '{$mb_id}.hpflower.com'
+						cf_domain = '{$mb_id}.hpflower.com',
+						site_id = '$mb_id'
 						";
         sql_query($sql);
 

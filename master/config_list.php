@@ -123,8 +123,7 @@ $colspan = 16;
         <th scope="col" id="mb_list_cert">테마</th>
         <th scope="col" id="mb_list_mailc"><?php echo subject_sort_link('mb_id') ?>관리자</a></th>
         <th scope="col" id="mb_list_open">회원</th>
-        <th scope="col" id="mb_list_mailr"><?php echo subject_sort_link('domain_1') ?>도메인1</a></th>
-        <th scope="col" id="mb_list_auth"><?php echo subject_sort_link('domain_2') ?>도메인2</a></th>
+        <th scope="col" id="mb_list_mailr"><?php echo subject_sort_link('cf_domain') ?>도메인1</a></th>
         <th scope="col" id="mb_list_mobile">상태</th>
         <th scope="col" id="mb_list_mng">관리</th>
         <th scope="col" id="mb_list_mng">지점 주문현황</th>
@@ -133,6 +132,18 @@ $colspan = 16;
     <tbody>
     <?php
     for ($i=0; $row=sql_fetch_array($result); $i++) {
+
+        // 퓨니코드 변환 (gnuwiz)
+        $encoded = '';
+        $decoded = $row['cf_domain'];
+        if(preg_match("/[\xA1-\xFE][\xA1-\xFE]/", $decoded))
+        {
+            $decoded = htmlentities($decoded, null, 'UTF-8');
+            if (isset($decoded)) {
+                $decoded = isset($decoded) ? stripslashes($decoded) : '';
+                $encoded = $IDN->encode($decoded);
+            }
+        }
 
         $config_mod = '<a href="./config_form.php?site_id='.$row['site_id'].'" class="btn btn_03" target="_blank">환경설정 수정</a>';
         $shop_mod = '<a href="./shop_admin/configform.php?site_id='.$row['site_id'].'" class="btn btn_03" target="_blank">쇼핑몰설정 수정</a>';
@@ -151,7 +162,7 @@ $colspan = 16;
             <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i ?>">
         </td>
         <td headers="mb_list_id" colspan="2" class="td_name sv_use">
-            <a href="http://<?php echo $row['domain_1']?>?<?php echo AUTO_LOGIN ?>=<?php echo AUTO_LOGIN_KEY ?>" target="_blank"><?php echo $row['cf_title'] ?></a>
+            <a href="http://<?php echo $row['cf_domain']?>?<?php echo AUTO_LOGIN ?>=<?php echo AUTO_LOGIN_KEY ?>" target="_blank"><?php echo $row['cf_title'] ?></a>
         </td>
         <td headers="mb_list_cert" class="td_mbcert">
 			<?php echo get_theme_select("cf_theme", "cf_theme[]", $row['cf_theme'], $row['cf_admin'])?>
@@ -159,8 +170,10 @@ $colspan = 16;
 		</td>
         <td headers="mb_list_mailc"><span class="txt_true"><?php echo $row['cf_admin'] ?></span></td>
         <td headers="mb_list_open"><?php echo get_member_count($row['site_id'])?>명</td>
-        <td headers="mb_list_mailr"><?php echo $row['domain_1'] ?></td>
-        <td headers="mb_list_mailr"><?php echo $row['domain_2'] ?></td>
+        <td headers="mb_list_mailr">
+            <?php echo $encoded ? $row['cf_domain'].'</br>' : $row['cf_domain']; ?>
+            <?php echo $encoded ? $encoded : $encoded;?>
+        </td>
         <td headers="mb_list_mobile" class="td_tel">
 			<select class="mb_level" name="mb_level[]">
 				<option value="">선택</option>

@@ -3114,7 +3114,8 @@ function check_url_host($url, $msg='', $return_url=G5_URL, $is_redirect=false)
 
     if ((isset($p['scheme']) && $p['scheme']) || (isset($p['host']) && $p['host']) || $is_host_check) {
         //if ($p['host'].(isset($p['port']) ? ':'.$p['port'] : '') != $_SERVER['HTTP_HOST']) {
-        if ( ($p['host'] != $host) || $is_host_check ) {
+        //if ( ($p['host'] != $host) || $is_host_check ) { <- 원본 함수를 아래와 같이 수정 함 (gnuwiz)
+        if ( ($p['host'] != $host) && $is_host_check && $p['host'] != 'hpflower.com' && $p['host'] != 'www.hpflower.com') {
             echo '<script>'.PHP_EOL;
             echo 'alert("url에 타 도메인을 지정할 수 없습니다.");'.PHP_EOL;
             echo 'document.location.href = "'.$return_url.'";'.PHP_EOL;

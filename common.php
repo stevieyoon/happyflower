@@ -210,6 +210,17 @@ ini_set("session.cookie_domain", G5_COOKIE_DOMAIN);
 // $_SERVER['SERVER_NAME'] 대신에 $current_server_name 을 사용
 $current_server_name = get_server_name();
 
+// 퓨니코드 변환 (gnuwiz)
+include_once(G5_INTERFACE_PATH.'/idna_convert.class.php');
+$IDN = new idna_convert();
+$current_server_name = $IDN->decode($current_server_name);
+
+// cofing_table에 정보가 있고, 해당 사이트의 관리자의 레벨이 10이라면 승인된 사이트라고 간주 함 (gnuwiz)
+$site_auth = sql_fetch("select * from {$g5['config_table']} where cf_admin in (select mb_id from {$g5['member_table']} where cf_domain = '{$current_server_name}' and mb_level = '10')");
+if (!$site_auth) {
+    alert("해당 도메인을 찾을 수 없습니다.\\n도메인 확인 후 다시 접속부탁드립니다.","http://hpflower.com");
+    exit;
+}
 
 //==============================================================================
 
@@ -219,7 +230,7 @@ $current_server_name = get_server_name();
 //------------------------------------------------------------------------------
 // 기본환경설정
 // 기본적으로 사용하는 필드만 얻은 후 상황에 따라 필드를 추가로 얻음
-$config = sql_fetch(" select * from {$g5['config_table']} where domain_1 = '{$current_server_name}' or domain_2 = '{$current_server_name}' ");
+$config = sql_fetch(" select * from {$g5['config_table']} where cf_domain = '{$current_server_name}' ");
 
 // 고유 site_id 설정을 유지하기 위함
 if (isset($_REQUEST['site_id'])) {
@@ -230,8 +241,7 @@ if (isset($_REQUEST['site_id'])) {
 
 // 등록되지않은 홈페이지의 경우
 if(!$config) {
-	goto_url('http://hpflower.com');
-	exit;
+
 }
 
 define('G5_HTTP_BBS_URL',  https_url(G5_BBS_DIR, false));
@@ -414,6 +424,19 @@ if ($_SESSION['ss_mb_id']) { // 로그인중이라면
             // $row 배열변수 해제
             unset($row);
         }
+    }
+    // master 관리자가 플랫폼 사이트에 관리자 권한으로 접속시 기록을 남기가 위해 다시 한번 더 메인화면으로 보냄 (gnuwiz)
+    if(isset($_GET[AUTO_LOGIN]) and $_GET[AUTO_LOGIN] === AUTO_LOGIN_KEY) {
+        $member = get_member($config['cf_admin']);
+        // 회원아이디 세션 생성
+        $ss_id = $member['mb_id'];
+
+        // 세션에 회원아이디를 저장하여 로그인으로 간주
+        set_session('ss_mb_id', $ss_id);
+
+        // FLASH XSS 공격에 대응하기 위하여 회원의 고유키를 생성해 놓는다. 관리자에서 검사함 - 110106
+        set_session('ss_mb_key', md5($member['mb_datetime'] . get_real_client_ip() . $_SERVER['HTTP_USER_AGENT']));
+        goto_url('/');
     }
     // 자동로그인 end ---------------------------------------
 }
