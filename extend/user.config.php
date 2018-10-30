@@ -4,8 +4,6 @@ define('G5_MASTER_DIR',      'master');
 define('G5_MASTER_URL',      G5_URL.'/'.G5_MASTER_DIR);
 define('G5_MASTER_PATH',     G5_PATH.'/'.G5_MASTER_DIR);
 
-
-
 $g5['ribbon_table'] = G5_TABLE_PREFIX.'ribbon'; // 리본 테이블
 $g5['cti_response'] = G5_TABLE_PREFIX.'cti_response'; // CTI 응답메제지 저장하기
 $g5['shop_order_cti_table'] = G5_TABLE_PREFIX.'shop_order_cti'; // cti 에러테이블

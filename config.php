@@ -92,9 +92,7 @@ define('G5_LGXPAY_URL',     G5_PLUGIN_URL.'/'.G5_LGXPAY_DIR);
 define('G5_SNS_URL',        G5_PLUGIN_URL.'/'.G5_SNS_DIR);
 define('G5_SYNDI_URL',      G5_PLUGIN_URL.'/'.G5_SYNDI_DIR);
 define('G5_MOBILE_URL',     G5_URL.'/'.G5_MOBILE_DIR);
-define('G5_INTERFACE_DIR',      'interface');
-define('G5_INTERFACE_URL',      G5_URL.'/'.G5_INTERFACE_DIR);
-define('G5_INTERFACE_PATH',     G5_PATH.'/'.G5_INTERFACE_DIR);
+
 // PATH 는 서버상에서의 절대경로
 define('G5_ADMIN_PATH',     G5_PATH.'/'.G5_ADMIN_DIR);
 define('G5_BBS_PATH',       G5_PATH.'/'.G5_BBS_DIR);
@@ -114,6 +112,11 @@ define('G5_LGXPAY_PATH',    G5_PLUGIN_PATH.'/'.G5_LGXPAY_DIR);
 define('G5_SNS_PATH',       G5_PLUGIN_PATH.'/'.G5_SNS_DIR);
 define('G5_SYNDI_PATH',     G5_PLUGIN_PATH.'/'.G5_SYNDI_DIR);
 define('G5_PHPMAILER_PATH', G5_PLUGIN_PATH.'/'.G5_PHPMAILER_DIR);
+
+// 필요한 PATH 추가 (gnuwiz)
+define('G5_INTERFACE_DIR',      'interface');
+define('G5_INTERFACE_URL',      G5_URL.'/'.G5_INTERFACE_DIR);
+define('G5_INTERFACE_PATH',     G5_PATH.'/'.G5_INTERFACE_DIR);
 //==============================================================================
 
 
