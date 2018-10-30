@@ -232,7 +232,7 @@ if (!$site_auth) {
 // 기본적으로 사용하는 필드만 얻은 후 상황에 따라 필드를 추가로 얻음
 $config = sql_fetch(" select * from {$g5['config_table']} where cf_domain = '{$current_server_name}' ");
 
-// 고유 site_id 설정을 유지하기 위함
+// 고유 site_id 설정을 유지하기 위함 (gnuwiz)
 if (isset($_REQUEST['site_id'])) {
     $site_id = $_REQUEST['site_id'];
 } else {
@@ -422,6 +422,7 @@ if ($_SESSION['ss_mb_id']) { // 로그인중이라면
     }
     // master 관리자가 플랫폼 사이트에 관리자 권한으로 접속시 기록을 남기가 위해 다시 한번 더 메인화면으로 보냄 (gnuwiz)
     if(isset($_GET[AUTO_LOGIN]) and $_GET[AUTO_LOGIN] === AUTO_LOGIN_KEY) {
+
         $member = get_member($config['cf_admin']);
         // 회원아이디 세션 생성
         $ss_id = $member['mb_id'];

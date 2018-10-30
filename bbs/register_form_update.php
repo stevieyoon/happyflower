@@ -236,7 +236,7 @@ if ($w == '') {
                      mb_8 = '{$mb_8}',
                      mb_9 = '{$mb_9}',
                      mb_10 = '{$mb_10}',
-					 site_id = '$mb_id'
+					 site_id = '{$site_id}'
                      {$sql_certify} ";
 
     // 이메일 인증을 사용하지 않는다면 이메일 인증시간을 바로 넣는다
@@ -258,7 +258,7 @@ if ($w == '') {
         // 어떠한 회원정보도 포함되지 않은 일회용 난수를 생성하여 인증에 사용
         if ($config['cf_use_email_certify']) {
             $mb_md5 = md5(pack('V*', rand(), rand(), rand(), rand()));
-            sql_query(" update {$g5['member_table']} set mb_email_certify2 = '$mb_md5' where mb_id = '$mb_id' ");
+            sql_query(" update {$g5['member_table']} set mb_email_certify2 = '$mb_md5' where mb_id = '$mb_id' and site_id = '$site_id' ");
             $certify_href = G5_BBS_URL.'/email_certify.php?mb_id='.$mb_id.'&amp;mb_md5='.$mb_md5;
         }
 
@@ -347,7 +347,7 @@ if ($w == '') {
                     {$sql_open_date}
                     {$sql_email_certify}
                     {$sql_certify}
-              where mb_id = '$mb_id' ";
+              where mb_id = '$mb_id' and site_id = '{$site_id}' ";
     sql_query($sql);
 }
 

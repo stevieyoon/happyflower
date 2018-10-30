@@ -114,6 +114,10 @@ define('G5_SYNDI_PATH',     G5_PLUGIN_PATH.'/'.G5_SYNDI_DIR);
 define('G5_PHPMAILER_PATH', G5_PLUGIN_PATH.'/'.G5_PHPMAILER_DIR);
 
 // 필요한 PATH 추가 (gnuwiz)
+define('G5_MASTER_DIR',      'master');
+define('G5_MASTER_URL',      G5_URL.'/'.G5_MASTER_DIR);
+define('G5_MASTER_PATH',     G5_PATH.'/'.G5_MASTER_DIR);
+
 define('G5_INTERFACE_DIR',      'interface');
 define('G5_INTERFACE_URL',      G5_URL.'/'.G5_INTERFACE_DIR);
 define('G5_INTERFACE_PATH',     G5_PATH.'/'.G5_INTERFACE_DIR);
