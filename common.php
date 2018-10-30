@@ -239,11 +239,6 @@ if (isset($_REQUEST['site_id'])) {
     $site_id = $config['site_id'];
 }
 
-// 등록되지않은 홈페이지의 경우
-if(!$config) {
-
-}
-
 define('G5_HTTP_BBS_URL',  https_url(G5_BBS_DIR, false));
 define('G5_HTTPS_BBS_URL', https_url(G5_BBS_DIR, true));
 if ($config['cf_editor'])
