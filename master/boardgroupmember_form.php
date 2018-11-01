@@ -4,7 +4,7 @@ include_once('./_common.php');
 
 auth_check($auth[$sub_menu], 'w');
 
-$mb = get_member($mb_id);
+$mb = get_member($mb_id, '*', $branch_site_id);
 if (!$mb['mb_id'])
     alert('존재하지 않는 회원입니다.');
 

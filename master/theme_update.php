@@ -8,11 +8,11 @@ if ($is_admin != 'super')
 admin_referer_check();
 
 $theme = trim($_POST['theme']);
-$site_id = trim($_POST['site_id']);
+$branch_site_id = trim($_POST['branch_site_id']);
 $theme_dir = get_theme_dir();
 
 if($_POST['type'] == 'reset') {
-    $sql = " update {$g5['config_table']} set cf_theme = '' where site_id = '{$site_id}' ";
+    $sql = " update {$g5['config_table']} set cf_theme = '' where site_id = '{$branch_site_id}' ";
     sql_query($sql);
     die('');
 }
@@ -21,7 +21,7 @@ if(!in_array($theme, $theme_dir))
     die('선택하신 테마가 설치되어 있지 않습니다.');
 
 // 테마적용
-$sql = " update {$g5['config_table']} set cf_theme = '$theme' where site_id = '{$site_id}' ";
+$sql = " update {$g5['config_table']} set cf_theme = '$theme' where site_id = '{$branch_site_id}' ";
 sql_query($sql);
 
 // 테마 설정 스킨 적용

@@ -3,9 +3,12 @@ $sub_menu = '400100';
 include_once('./_common.php');
 include_once(G5_EDITOR_LIB);
 
-// 수정을 원하는 플랫폼의 정보를 가져옴
-$config = sql_fetch(" select * from {$g5['config_table']} where site_id = '$site_id' ");
-$default = sql_fetch(" select * from {$g5['g5_shop_default_table']} where site_id = '$site_id' ");
+// branch_site_id가 없다면 현재의 사이트를 조회 함 (gnuwiz)
+$branch_site_id = $branch_site_id ? $branch_site_id : $site_id;
+
+// 수정을 원하는 가맹점의 정보를 가져옴 (gnuwiz)
+$config = sql_fetch(" select * from {$g5['config_table']} where site_id = '$branch_site_id' ");
+$default = sql_fetch(" select * from {$g5['g5_shop_default_table']} where site_id = '$branch_site_id' ");
 
 auth_check($auth[$sub_menu], "r");
 
@@ -164,7 +167,7 @@ if(!isset($default['de_listtype_list_skin'])) {
 
 <form name="fconfig" action="./configformupdate.php" onsubmit="return fconfig_check(this)" method="post" enctype="MULTIPART/FORM-DATA">
 <input type="hidden" name="token" value="">
-<input type="hidden" name="site_id" value="<?php echo $config['site_id']?>">
+<input type="hidden" name="branch_site_id" value="<?php echo $config['site_id']?>">
 <section id="anc_scf_info">
     <h2 class="h2_frm">사업자정보</h2>
     <?php echo $pg_anchor; ?>

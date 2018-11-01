@@ -2,7 +2,7 @@ $(function() {
     $(".theme_active").on("click", function() {
         var theme = $(this).data("theme");
         var name  = $(this).data("name");
-        var site_id  = $(this).data("site_id");
+        var branch_site_id  = $(this).data("branch_site_id");
 
         if(!confirm(name+" 테마를 적용하시겠습니까?"))
             return false;
@@ -18,7 +18,7 @@ $(function() {
             url: "./theme_update.php",
             data: {
                 "theme": theme,
-                "site_id": site_id,
+                "branch_site_id": branch_site_id,
                 "set_default_skin": set_default_skin
             },
             cache: false,

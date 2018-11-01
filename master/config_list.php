@@ -145,10 +145,10 @@ $colspan = 16;
             }
         }
 
-        $config_mod = '<a href="./config_form.php?site_id='.$row['site_id'].'" class="btn btn_03" target="_blank">환경설정 수정</a>';
-        $shop_mod = '<a href="./shop_admin/configform.php?site_id='.$row['site_id'].'" class="btn btn_03" target="_blank">쇼핑몰설정 수정</a>';
+        $config_mod = '<a href="./config_form.php?branch_site_id='.$row['site_id'].'" class="btn btn_03" target="_blank">환경설정 수정</a>';
+        $shop_mod = '<a href="./shop_admin/configform.php?branch_site_id='.$row['site_id'].'" class="btn btn_03" target="_blank">쇼핑몰설정 수정</a>';
 		
-		$theme_mod = '<a href="./theme.php?site_id='.$row['site_id'].'" class="btn btn_03" target="_blank">테마설정</a>';
+		$theme_mod = '<a href="./theme.php?branch_site_id='.$row['site_id'].'" class="btn btn_03" target="_blank">테마설정</a>';
 
         $mb_id = $row['mb_id'];
 

@@ -13,6 +13,9 @@ check_master_token();
 
 $mb_id = trim($_POST['mb_id']);
 
+// 신규가입시 가입자 id를 대입, 수정시 현재 가입된 사이트의 site_id가 대입 (gnuwiz)
+$branch_site_id = $branch_site_id ? $branch_site_id : $mb_id;
+
 // 휴대폰번호 체크
 $mb_hp = hyphen_hp_number($_POST['mb_hp']);
 if($mb_hp) {
@@ -69,18 +72,18 @@ $sql_common = "  mb_name = '{$_POST['mb_name']}',
 
 if ($w == '')
 {
-    $mb = get_member($mb_id);
+    $mb = get_member($mb_id, '*', $branch_site_id);
     if ($mb['mb_id'])
         alert('이미 존재하는 회원아이디입니다.\\nＩＤ : '.$mb['mb_id'].'\\n이름 : '.$mb['mb_name'].'\\n닉네임 : '.$mb['mb_nick'].'\\n메일 : '.$mb['mb_email']);
 
     // 닉네임중복체크
-    $sql = " select mb_id, mb_name, mb_nick, mb_email from {$g5['member_table']} where mb_nick = '{$_POST['mb_nick']}' ";
+    $sql = " select mb_id, mb_name, mb_nick, mb_email from {$g5['member_table']} where mb_nick = '{$_POST['mb_nick']}' and site_id = '{$branch_site_id}' ";
     $row = sql_fetch($sql);
     if ($row['mb_id'])
         alert('이미 존재하는 닉네임입니다.\\nＩＤ : '.$row['mb_id'].'\\n이름 : '.$row['mb_name'].'\\n닉네임 : '.$row['mb_nick'].'\\n메일 : '.$row['mb_email']);
 
     // 이메일중복체크
-    $sql = " select mb_id, mb_name, mb_nick, mb_email from {$g5['member_table']} where mb_email = '{$_POST['mb_email']}' ";
+    $sql = " select mb_id, mb_name, mb_nick, mb_email from {$g5['member_table']} where mb_email = '{$_POST['mb_email']}' and site_id = '{$branch_site_id}' ";
     $row = sql_fetch($sql);
     if ($row['mb_id'])
         alert('이미 존재하는 이메일입니다.\\nＩＤ : '.$row['mb_id'].'\\n이름 : '.$row['mb_name'].'\\n닉네임 : '.$row['mb_nick'].'\\n메일 : '.$row['mb_email']);
@@ -328,7 +331,7 @@ if ($w == '')
 }
 else if ($w == 'u')
 {
-    $mb = get_member($mb_id);
+    $mb = get_member($mb_id, '*', $branch_site_id);
     if (!$mb['mb_id'])
         alert('존재하지 않는 회원자료입니다.');
 
@@ -343,13 +346,13 @@ else if ($w == 'u')
         alert($mb['mb_id'].' : 로그인 중인 관리자 레벨은 수정 할 수 없습니다.');
 
     // 닉네임중복체크
-    $sql = " select mb_id, mb_name, mb_nick, mb_email from {$g5['member_table']} where mb_nick = '{$_POST['mb_nick']}' and mb_id <> '$mb_id' ";
+    $sql = " select mb_id, mb_name, mb_nick, mb_email from {$g5['member_table']} where mb_nick = '{$_POST['mb_nick']}' and mb_id <> '$mb_id' and site_id = '$branch_site_id' ";
     $row = sql_fetch($sql);
     if ($row['mb_id'])
         alert('이미 존재하는 닉네임입니다.\\nＩＤ : '.$row['mb_id'].'\\n이름 : '.$row['mb_name'].'\\n닉네임 : '.$row['mb_nick'].'\\n메일 : '.$row['mb_email']);
 
     // 이메일중복체크
-    $sql = " select mb_id, mb_name, mb_nick, mb_email from {$g5['member_table']} where mb_email = '{$_POST['mb_email']}' and mb_id <> '$mb_id' ";
+    $sql = " select mb_id, mb_name, mb_nick, mb_email from {$g5['member_table']} where mb_email = '{$_POST['mb_email']}' and mb_id <> '$mb_id' and site_id = '$branch_site_id' ";
     $row = sql_fetch($sql);
     if ($row['mb_id'])
         alert('이미 존재하는 이메일입니다.\\nＩＤ : '.$row['mb_id'].'\\n이름 : '.$row['mb_name'].'\\n닉네임 : '.$row['mb_nick'].'\\n메일 : '.$row['mb_email']);
@@ -461,11 +464,12 @@ else if ($w == 'u')
                 set {$sql_common}
                      {$sql_password}
                      {$sql_certify}
-                where mb_id = '{$mb_id}' ";
+                where mb_id = '{$mb_id}'
+                and site_id = '$branch_site_id' ";
     sql_query($sql);
 }
 else
     alert('제대로 된 값이 넘어오지 않았습니다.');
 
-goto_url('./member_form.php?'.$qstr.'&amp;w=u&amp;mb_id='.$mb_id, false);
+goto_url('./member_form.php?'.$qstr.'&amp;w=u&amp;mb_id='.$mb_id.'&amp;branch_site_id='.$branch_site_id, false);
 ?>

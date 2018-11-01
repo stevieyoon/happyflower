@@ -2,10 +2,11 @@
 $sub_menu = "100280";
 include_once('./_common.php');
 
-// 수정을 원하는 플랫폼의 정보를 가져옴
-if($_SERVER['PHP_SELF']=="/adm/theme.php" && $_GET['site_id']) {
-	$config = sql_fetch(" select * from {$g5['config_table']} where site_id = '{$_GET['site_id']}' ");
-}
+// branch_site_id가 없다면 현재의 사이트를 조회 함 (gnuwiz)
+$branch_site_id = $branch_site_id ? $branch_site_id : $site_id;
+
+// 수정을 원하는 가맹점의 정보를 가져옴 (gnuwiz)
+$config = sql_fetch(" select * from {$g5['config_table']} where site_id = '$branch_site_id' ");
 
 if ($is_admin != 'super')
     alert('최고관리자만 접근 가능합니다.');
@@ -57,7 +58,7 @@ include_once('./admin.head.php');
             else
                 $set_default_skin = 'false';
 
-            $btn_active = '<button type="button" class="theme_sl theme_active" data-theme="'.$theme[$i].'" '.'data-name="'.$name.'" data-site_id = "'.$config['site_id'].'" data-set_default_skin="'.$set_default_skin.'">테마적용</button>';
+            $btn_active = '<button type="button" class="theme_sl theme_active" data-theme="'.$theme[$i].'" '.'data-name="'.$name.'" data-branch_site_id = "'.$config['site_id'].'" data-set_default_skin="'.$set_default_skin.'">테마적용</button>';
         }
     ?>
     <li>

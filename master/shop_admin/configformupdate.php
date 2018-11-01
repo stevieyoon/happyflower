@@ -211,11 +211,11 @@ $sql = " update {$g5['g5_shop_default_table']}
                 de_member_reg_coupon_term     = '{$_POST['de_member_reg_coupon_term']}',
                 de_member_reg_coupon_price    = '{$_POST['de_member_reg_coupon_price']}',
                 de_member_reg_coupon_minimum  = '{$_POST['de_member_reg_coupon_minimum']}'
-				where site_id = '{$_POST['site_id']}' ";
+				where site_id = '{$branch_site_id}' ";
 sql_query($sql);
 
 // 환경설정 > 포인트 사용
-sql_query(" update {$g5['config_table']} set cf_use_point = '{$_POST['cf_use_point']}' ");
+sql_query(" update {$g5['config_table']} set cf_use_point = '{$_POST['cf_use_point']}' and site_id = '{$branch_site_id}' ");
 
 // LG, 아이코드 설정
 $sql = " update {$g5['config_table']}
@@ -227,15 +227,15 @@ $sql = " update {$g5['config_table']}
                 cf_icode_server_port    = '{$_POST['cf_icode_server_port']}',
                 cf_lg_mid               = '{$_POST['cf_lg_mid']}',
                 cf_lg_mert_key          = '{$_POST['cf_lg_mert_key']}'
-				where site_id = '{$_POST['site_id']}' ";
+				where site_id = '{$branch_site_id}' ";
 sql_query($sql);
 
 // wetoz : mainpay
 $sql = " update {$g5['g5_shop_default_table']}
             set de_mainpay_mid          = '{$_POST['de_mainpay_mid']}',
                 de_mainpay_key          = '{$_POST['de_mainpay_key']}'
-                where site_id = '{$_POST['site_id']}' ";
+                where site_id = '{$branch_site_id}' ";
 sql_query($sql, true);
 
-goto_url("./configform.php?site_id=".$_POST['site_id']);
+goto_url("./configform.php?branch_site_id=".$branch_site_id);
 ?>

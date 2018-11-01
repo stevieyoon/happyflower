@@ -173,10 +173,10 @@ $sql = " update {$g5['config_table']}
                 cf_8 = '{$_POST['cf_8']}',
                 cf_9 = '{$_POST['cf_9']}',
                 cf_10 = '{$_POST['cf_10']}'
-				where site_id = '$site_id' ";
+				where site_id = '$branch_site_id' ";
 sql_query($sql);
 
 //sql_query(" OPTIMIZE TABLE `$g5[config_table]` ");
 
-goto_url('./config_form.php?site_id='.$site_id, false);
+goto_url('./config_form.php?branch_site_id='.$branch_site_id, false);
 ?>

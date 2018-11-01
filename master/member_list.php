@@ -157,7 +157,7 @@ $colspan = 16;
         if ($is_admin == 'group') {
             $s_mod = '';
         } else {
-            $s_mod = '<a href="./member_form.php?'.$qstr.'&amp;w=u&amp;mb_id='.$row['mb_id'].'" class="btn btn_03">수정</a>';
+            $s_mod = '<a href="./member_form.php?'.$qstr.'&amp;w=u&amp;mb_id='.$row['mb_id'].'&amp;branch_site_id='.$row['site_id'].'" class="btn btn_03">수정</a>';
         }
         $s_grp = '<a href="./boardgroupmember_form.php?mb_id='.$row['mb_id'].'" class="btn btn_02">그룹</a>';
 
@@ -211,6 +211,7 @@ $colspan = 16;
             <input type="hidden" name="mb_id[<?php echo $i ?>]" value="<?php echo $row['mb_id'] ?>" id="mb_id_<?php echo $i ?>">
             <label for="chk_<?php echo $i; ?>" class="sound_only"><?php echo get_text($row['mb_name']); ?> <?php echo get_text($row['mb_nick']); ?>님</label>
             <input type="checkbox" name="chk[]" value="<?php echo $i ?>" id="chk_<?php echo $i ?>">
+            <input type="hidden" name="branch_site_id[<?php echo $i ?>]" value="<?php echo $row['site_id'] ?>" id="branch_site_id_<?php echo $i ?>">
         </td>
         <td headers="mb_list_id" colspan="2" class="td_name sv_use">
             <?php echo $mb_id ?>

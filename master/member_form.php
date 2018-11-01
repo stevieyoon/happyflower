@@ -4,6 +4,9 @@ include_once('./_common.php');
 
 auth_check($auth[$sub_menu], 'w');
 
+// branch_site_id가 없다면 현재의 사이트를 조회 함 (gnuwiz)
+$branch_site_id = $branch_site_id ? $branch_site_id : $site_id;
+
 if ($w == '')
 {
     $required_mb_id = 'required';
@@ -18,7 +21,7 @@ if ($w == '')
 }
 else if ($w == 'u')
 {
-    $mb = get_member($mb_id);
+    $mb = get_member($mb_id, '*', $branch_site_id);
     if (!$mb['mb_id'])
         alert('존재하지 않는 회원자료입니다.');
 
@@ -148,6 +151,7 @@ add_javascript(G5_POSTCODE_JS, 0);    //다음 주소 js
 <input type="hidden" name="sod" value="<?php echo $sod ?>">
 <input type="hidden" name="page" value="<?php echo $page ?>">
 <input type="hidden" name="token" value="">
+<input type="hidden" name="branch_site_id" value="<?php echo $branch_site_id?>">
 
 <div class="tbl_frm01 tbl_wrap">
     <table>
@@ -163,7 +167,7 @@ add_javascript(G5_POSTCODE_JS, 0);    //다음 주소 js
         <th scope="row"><label for="mb_id">아이디<?php echo $sound_only ?></label></th>
         <td>
             <input type="text" name="mb_id" value="<?php echo $mb['mb_id'] ?>" id="mb_id" <?php echo $required_mb_id ?> class="frm_input <?php echo $required_mb_id_class ?>" size="15"  maxlength="20">
-            <?php if ($w=='u'){ ?><a href="./boardgroupmember_form.php?mb_id=<?php echo $mb['mb_id'] ?>" class="btn_frmline">접근가능그룹보기</a><?php } ?>
+            <?php if ($w=='u'){ ?><a href="./boardgroupmember_form.php?mb_id=<?php echo $mb['mb_id'] ?>&amp;branch_site_id=<?php echo $mb['site_id'] ?>" class="btn_frmline">접근가능그룹보기</a><?php } ?>
         </td>
         <th scope="row"><label for="mb_password">비밀번호<?php echo $sound_only ?></label></th>
         <td><input type="password" name="mb_password" id="mb_password" <?php echo $required_mb_password ?> class="frm_input <?php echo $required_mb_password ?>" size="15" maxlength="20"></td>

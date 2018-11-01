@@ -711,24 +711,16 @@ function get_group($gr_id)
 
 
 // 회원 정보를 얻는다.
-function get_member($mb_id, $fields='*')
+function get_member($mb_id, $fields='*', $branch_site_id=false)
 {
     global $g5, $site_id;
 
     $mb_id = preg_replace("/[^0-9a-z_]+/i", "", $mb_id);
 
-    // 지점환경설정을 수정 할 경우 master 사이트에서 충돌을 방지하기 위해 site_id 에 mb_id 를 대입 (gnuwiz)
-    $user_site_id = $site_id;
-    if ($mb_id == "master") {
-        $user_site_id = $mb_id;
-    }
+    // 가맹정 회원 정보를 조회 할 경우 master 사이트에서 충돌을 방지하기 위해 site_id 에 mb_id 를 대입 /master/member_form.php (gnuwiz)
+    $branch_site_id = $branch_site_id ? $branch_site_id : $site_id;
 
-    // 플랫폼 회원 정보를 조회 할 경우 master 사이트에서 충돌을 방지하기 위해 site_id 에 mb_id 를 대입 /master/member_form.php (gnuwiz)
-    if ($mb_id != "master" && $site_id == "master") {
-        $user_site_id = $mb_id;
-    }
-
-    return sql_fetch(" select $fields from {$g5['member_table']} where mb_id = TRIM('$mb_id') and site_id = '{$user_site_id}' ");
+    return sql_fetch(" select $fields from {$g5['member_table']} where mb_id = TRIM('$mb_id') and site_id = '{$branch_site_id}' ");
 }
 
 
@@ -2938,13 +2930,16 @@ function conv_unescape_nl($str)
 }
 
 // 회원 삭제
-function member_delete($mb_id)
+function member_delete($mb_id, $branch_site_id = false)
 {
     global $config;
     global $g5;
     global $site_id;
 
-    $sql = " select mb_name, mb_nick, mb_ip, mb_recommend, mb_memo, mb_level from {$g5['member_table']} where mb_id= '".$mb_id."' and site_id = '{$site_id}' ";
+    // 가맹정 회원 정보를 조회 할 경우 master 사이트에서 충돌을 방지하기 위해 site_id 에 mb_id 를 대입 /master/member_form.php (gnuwiz)
+    $branch_site_id = $branch_site_id ? $branch_site_id : $site_id;
+
+    $sql = " select mb_name, mb_nick, mb_ip, mb_recommend, mb_memo, mb_level from {$g5['member_table']} where mb_id= '".$mb_id."' and site_id = '{$branch_site_id}' ";
     $mb = sql_fetch($sql);
 
     // 이미 삭제된 회원은 제외
@@ -2952,35 +2947,35 @@ function member_delete($mb_id)
         return;
 
     if ($mb['mb_recommend']) {
-        $row = sql_fetch(" select count(*) as cnt from {$g5['member_table']} where mb_id = '".addslashes($mb['mb_recommend'])."' and site_id = '{$site_id}' ");
+        $row = sql_fetch(" select count(*) as cnt from {$g5['member_table']} where mb_id = '".addslashes($mb['mb_recommend'])."' and site_id = '{$branch_site_id}' ");
         if ($row['cnt'])
             insert_point($mb['mb_recommend'], $config['cf_recommend_point'] * (-1), $mb_id.'님의 회원자료 삭제로 인한 추천인 포인트 반환', "@member", $mb['mb_recommend'], $mb_id.' 추천인 삭제');
     }
 
     // 회원자료는 정보만 없앤 후 아이디는 보관하여 다른 사람이 사용하지 못하도록 함 : 061025
-    $sql = " update {$g5['member_table']} set mb_password = '', mb_level = 1, mb_email = '', mb_homepage = '', mb_tel = '', mb_hp = '', mb_zip1 = '', mb_zip2 = '', mb_addr1 = '', mb_addr2 = '', mb_birth = '', mb_sex = '', mb_signature = '', mb_memo = '".date('Ymd', G5_SERVER_TIME)." 삭제함\n{$mb['mb_memo']}' where mb_id = '{$mb_id}' and site_id = '{$site_id}' ";
+    $sql = " update {$g5['member_table']} set mb_password = '', mb_level = 1, mb_email = '', mb_homepage = '', mb_tel = '', mb_hp = '', mb_zip1 = '', mb_zip2 = '', mb_addr1 = '', mb_addr2 = '', mb_birth = '', mb_sex = '', mb_signature = '', mb_memo = '".date('Ymd', G5_SERVER_TIME)." 삭제함\n{$mb['mb_memo']}' where mb_id = '{$mb_id}' and site_id = '{$branch_site_id}' ";
     sql_query($sql);
 
     // 포인트 테이블에서 삭제
-    sql_query(" delete from {$g5['point_table']} where mb_id = '$mb_id' and site_id = '{$site_id}' ");
+    sql_query(" delete from {$g5['point_table']} where mb_id = '$mb_id' and site_id = '{$branch_site_id}' ");
 
     // 그룹접근가능 삭제
-    sql_query(" delete from {$g5['group_member_table']} where mb_id = '$mb_id' and site_id = '{$site_id}' ");
+    sql_query(" delete from {$g5['group_member_table']} where mb_id = '$mb_id' and site_id = '{$branch_site_id}' ");
 
     // 쪽지 삭제
-    sql_query(" delete from {$g5['memo_table']} where me_recv_mb_id = '$mb_id' or me_send_mb_id = '$mb_id' and site_id = '{$site_id}' ");
+    sql_query(" delete from {$g5['memo_table']} where me_recv_mb_id = '$mb_id' or me_send_mb_id = '$mb_id' and site_id = '{$branch_site_id}' ");
 
     // 스크랩 삭제
-    sql_query(" delete from {$g5['scrap_table']} where mb_id = '$mb_id' and site_id = '{$site_id}' ");
+    sql_query(" delete from {$g5['scrap_table']} where mb_id = '$mb_id' and site_id = '{$branch_site_id}' ");
 
     // 관리권한 삭제
-    sql_query(" delete from {$g5['auth_table']} where mb_id = '$mb_id' and site_id = '{$site_id}' ");
+    sql_query(" delete from {$g5['auth_table']} where mb_id = '$mb_id' and site_id = '{$branch_site_id}' ");
 
     // 그룹관리자인 경우 그룹관리자를 공백으로
-    sql_query(" update {$g5['group_table']} set gr_admin = '' where gr_admin = '$mb_id' and site_id = '{$site_id}' ");
+    sql_query(" update {$g5['group_table']} set gr_admin = '' where gr_admin = '$mb_id' and site_id = '{$branch_site_id}' ");
 
     // 게시판관리자인 경우 게시판관리자를 공백으로
-    sql_query(" update {$g5['board_table']} set bo_admin = '' where bo_admin = '$mb_id' and site_id = '{$site_id}' ");
+    sql_query(" update {$g5['board_table']} set bo_admin = '' where bo_admin = '$mb_id' and site_id = '{$branch_site_id}' ");
 
     //소셜로그인에서 삭제 또는 해제
     if(function_exists('social_member_link_delete')){

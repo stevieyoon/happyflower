@@ -2,10 +2,13 @@
 $sub_menu = "100100";
 include_once('./_common.php');
 
-// 수정을 원하는 플랫폼의 정보를 가져옴
-$config = sql_fetch(" select * from {$g5['config_table']} where site_id = '$site_id' ");
-
 auth_check($auth[$sub_menu], 'r');
+
+// branch_site_id가 없다면 현재의 사이트를 조회 함 (gnuwiz)
+$branch_site_id = $branch_site_id ? $branch_site_id : $site_id;
+
+// 수정을 원하는 가맹점의 정보를 가져옴 (gnuwiz)
+$config = sql_fetch(" select * from {$g5['config_table']} where site_id = '$branch_site_id' ");
 
 if ($is_admin != 'super')
     alert('최고관리자만 접근 가능합니다.');
@@ -288,7 +291,7 @@ if ($config['cf_sms_use'] && $config['cf_icode_id'] && $config['cf_icode_pw']) {
 
 <form name="fconfigform" id="fconfigform" method="post" onsubmit="return fconfigform_submit(this);">
 <input type="hidden" name="token" value="" id="token">
-<input type="hidden" name="site_id" value="<?php echo $site_id?>">
+<input type="hidden" name="branch_site_id" value="<?php echo $config['site_id']?>">
 
 <section id="anc_cf_basic">
     <h2 class="h2_frm">홈페이지 기본환경 설정</h2>

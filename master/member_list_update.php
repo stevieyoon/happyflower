@@ -19,7 +19,7 @@ if ($_POST['act_button'] == "선택수정") {
         // 실제 번호를 넘김
         $k = $_POST['chk'][$i];
 
-        $mb = get_member($_POST['mb_id'][$k]);
+        $mb = get_member($_POST['mb_id'][$k], '*', $_POST['branch_site_id'][$k]);
 
         if (!$mb['mb_id']) {
             $msg .= $mb['mb_id'].' : 회원자료가 존재하지 않습니다.\\n';
@@ -42,7 +42,7 @@ if ($_POST['act_button'] == "선택수정") {
                             mb_certify = '".sql_real_escape_string($_POST['mb_certify'][$k])."',
                             mb_adult = '{$mb_adult}'
                         where mb_id = '".sql_real_escape_string($_POST['mb_id'][$k])."'
-                         and site_id = '".sql_real_escape_string($_POST['mb_id'][$k])."' ";
+                         and site_id = '{$_POST['branch_site_id'][$k]}' ";
             sql_query($sql);
         }
     }
@@ -54,7 +54,7 @@ if ($_POST['act_button'] == "선택수정") {
         // 실제 번호를 넘김
         $k = $_POST['chk'][$i];
 
-        $mb = get_member($_POST['mb_id'][$k]);
+        $mb = get_member($_POST['mb_id'][$k], '*', $_POST['branch_site_id'][$k]);
 
         if (!$mb['mb_id']) {
             $msg .= $mb['mb_id'].' : 회원자료가 존재하지 않습니다.\\n';
@@ -66,7 +66,7 @@ if ($_POST['act_button'] == "선택수정") {
             $msg .= $mb['mb_id'].' : 자신보다 권한이 높거나 같은 회원은 삭제할 수 없습니다.\\n';
         } else {
             // 회원자료 삭제
-            member_delete($mb['mb_id']);
+            member_delete($mb['mb_id'], $_POST['branch_site_id'][$k]);
         }
     }
 }
