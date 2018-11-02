@@ -99,6 +99,9 @@ $mb_sms_no          = !$mb['mb_sms']        ? 'checked="checked"' : '';
 $mb_open_yes        =  $mb['mb_open']       ? 'checked="checked"' : '';
 $mb_open_no         = !$mb['mb_open']       ? 'checked="checked"' : '';
 
+// 회원구분
+$mb_user_site  =  $mb['site_id'] == 'master' ? 'checked="checked"' : '';
+
 if (isset($mb['mb_certify'])) {
     // 날짜시간형이라면 drop 시킴
     if (preg_match("/-/", $mb['mb_certify'])) {
@@ -143,6 +146,14 @@ include_once('./admin.head.php');
 add_javascript(G5_POSTCODE_JS, 0);    //다음 주소 js
 ?>
 
+<div class="local_desc01 local_desc">
+    <p>
+        <b>신규 가맹점 회원</b>은 상단의 가맹점 회원에 체크박스를 선택 후 가입을 진행하세요.<br>
+        그렇지 않으면 해당 회원은 본사 사이트의 회원으로 가입됩니다.<br>
+        <strong>주의) 가맹점 회원 아이디는 중복 가입이 불가능합니다.</strong>
+    </p>
+</div>
+
 <form name="fmember" id="fmember" action="./member_form_update.php" onsubmit="return fmember_submit(this);" method="post" enctype="multipart/form-data">
 <input type="hidden" name="w" value="<?php echo $w ?>">
 <input type="hidden" name="sfl" value="<?php echo $sfl ?>">
@@ -163,6 +174,19 @@ add_javascript(G5_POSTCODE_JS, 0);    //다음 주소 js
         <col>
     </colgroup>
     <tbody>
+    <tr>
+        <th scope="row">회원 구분</th>
+        <td colspan="3">
+            <?php if ($w == '') { ?>
+                <input type="radio" name="mb_user_site" value="master" id="mb_user_site_master" <?php if($mb['site_id'] == 'master') echo 'checked="checked"'; ?>>
+                <label for="mb_user_site_master">본사회원</label>
+                <input type="radio" name="mb_user_site" value="branch" id="mb_user_site_branch" <?php if($mb['site_id'] != 'master') echo 'checked="checked"'; ?>>
+                <label for="mb_user_site_branch">가맹점회원</label>
+            <?php } else { ?>
+                <?php echo $mb['site_id'] == 'master' ? '본사회원' : '가맹점회원'; ?>
+            <?php } ?>
+        </td>
+    </tr>
     <tr>
         <th scope="row"><label for="mb_id">아이디<?php echo $sound_only ?></label></th>
         <td>

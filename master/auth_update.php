@@ -14,13 +14,15 @@ check_master_token();
 $sql = " insert into {$g5['auth_table']}
             set mb_id   = '{$_POST['mb_id']}',
                 au_menu = '{$_POST['au_menu']}',
-                au_auth = '{$_POST['r']},{$_POST['w']},{$_POST['d']}' ";
+                au_auth = '{$_POST['r']},{$_POST['w']},{$_POST['d']}',
+                site_id = '{$site_id}' ";
 $result = sql_query($sql, FALSE);
 if (!$result) {
     $sql = " update {$g5['auth_table']}
                 set au_auth = '{$_POST['r']},{$_POST['w']},{$_POST['d']}'
               where mb_id   = '{$_POST['mb_id']}'
-                and au_menu = '{$_POST['au_menu']}' ";
+                and au_menu = '{$_POST['au_menu']}'
+                and site_id = '{$site_id}' ";
     sql_query($sql);
 }
 

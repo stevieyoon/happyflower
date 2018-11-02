@@ -14,7 +14,7 @@ check_master_token();
 $mb_id = trim($_POST['mb_id']);
 
 // 신규가입시 가입자 id를 대입, 수정시 현재 가입된 사이트의 site_id가 대입 (gnuwiz)
-$branch_site_id = $branch_site_id ? $branch_site_id : $mb_id;
+if ($w == '')   $branch_site_id = $mb_user_site == 'master' ? $branch_site_id : $mb_id;
 
 // 휴대폰번호 체크
 $mb_hp = hyphen_hp_number($_POST['mb_hp']);
@@ -88,8 +88,8 @@ if ($w == '')
     if ($row['mb_id'])
         alert('이미 존재하는 이메일입니다.\\nＩＤ : '.$row['mb_id'].'\\n이름 : '.$row['mb_name'].'\\n닉네임 : '.$row['mb_nick'].'\\n메일 : '.$row['mb_email']);
 
-    // master 사이트에서 가입시 회원을 관리자로 생성함(gnuwiz)
-    if($config['site_id'] == 'master') {
+    // master 사이트에서 가입시 회원을 관리자로 생성 함 (gnuwiz)
+    if($mb_user_site == 'branch') {
 
         // config 테이블에 추가
         $sql = " insert into {$g5['config_table']}
@@ -158,8 +158,8 @@ if ($w == '')
 						cf_stipulation = '해당 홈페이지에 맞는 회원가입약관을 입력합니다.',
 						cf_privacy = '해당 홈페이지에 맞는 개인정보처리방침을 입력합니다.',
 						cf_captcha = 'kcaptcha',
-						cf_domain = '{$mb_id}.hpflower.com',
-						site_id = '$mb_id'
+						cf_domain = '{$branch_site_id}.hpflower.com',
+						site_id = '$branch_site_id'
 						";
         sql_query($sql);
 
@@ -312,22 +312,22 @@ if ($w == '')
                     de_sms_cont3 = '{이름}님께서 주문하셨습니다.\n{주문번호}\n{주문금액}원\n{회사명}',
                     de_sms_cont4 = '{이름}님 입금 감사합니다.\n{입금액}원\n주문번호:\n{주문번호}\n{회사명}',
                     de_sms_cont5 = '{이름}님 배송합니다.\n택배:{택배회사}\n운송장번호:\n{운송장번호}\n{회사명}',
-					site_id = '$mb_id'
+					site_id = '$branch_site_id'
                     ";
         sql_query($sql);
 
 
         // 내용관리 생성
-        sql_query(" insert into {$g5['content_table']} set co_id = 'company', co_html = '1', co_subject = '회사소개', co_content= '<p align=center><b>회사소개에 대한 내용을 입력하십시오.</b></p>', co_skin = 'theme/basic', co_mobile_skin = 'theme/basic', site_id = '$mb_id' ");
-        sql_query(" insert into {$g5['content_table']} set co_id = 'privacy', co_html = '1', co_subject = '개인정보 처리방침', co_content= '<p align=center><b>개인정보 처리방침에 대한 내용을 입력하십시오.</b></p>', co_skin = 'theme/basic', co_mobile_skin = 'theme/basic', site_id = '$mb_id' ");
-        sql_query(" insert into {$g5['content_table']} set co_id = 'provision', co_html = '1', co_subject = '서비스 이용약관', co_content= '<p align=center><b>서비스 이용약관에 대한 내용을 입력하십시오.</b></p>', co_skin = 'theme/basic', co_mobile_skin = 'theme/basic', site_id = '$mb_id' ");
+        sql_query(" insert into {$g5['content_table']} set co_id = 'company', co_html = '1', co_subject = '회사소개', co_content= '<p align=center><b>회사소개에 대한 내용을 입력하십시오.</b></p>', co_skin = 'theme/basic', co_mobile_skin = 'theme/basic', site_id = '$branch_site_id' ");
+        sql_query(" insert into {$g5['content_table']} set co_id = 'privacy', co_html = '1', co_subject = '개인정보 처리방침', co_content= '<p align=center><b>개인정보 처리방침에 대한 내용을 입력하십시오.</b></p>', co_skin = 'theme/basic', co_mobile_skin = 'theme/basic', site_id = '$branch_site_id' ");
+        sql_query(" insert into {$g5['content_table']} set co_id = 'provision', co_html = '1', co_subject = '서비스 이용약관', co_content= '<p align=center><b>서비스 이용약관에 대한 내용을 입력하십시오.</b></p>', co_skin = 'theme/basic', co_mobile_skin = 'theme/basic', site_id = '$branch_site_id' ");
 
         // FAQ Master
-        sql_query(" insert into {$g5['faq_master_table']} set fm_subject = '자주하시는 질문', site_id = '$mb_id' ");
+        sql_query(" insert into {$g5['faq_master_table']} set fm_subject = '자주하시는 질문', site_id = '$branch_site_id' ");
 
     }
 
-    sql_query(" insert into {$g5['member_table']} set mb_id = '{$mb_id}', mb_password = '".get_encrypt_string($mb_password)."', mb_datetime = '".G5_TIME_YMDHIS."', mb_ip = '{$_SERVER['REMOTE_ADDR']}', mb_email_certify = '".G5_TIME_YMDHIS."', {$sql_common}, site_id = '{$mb_id}' ");
+    sql_query(" insert into {$g5['member_table']} set mb_id = '{$mb_id}', mb_password = '".get_encrypt_string($mb_password)."', mb_datetime = '".G5_TIME_YMDHIS."', mb_ip = '{$_SERVER['REMOTE_ADDR']}', mb_email_certify = '".G5_TIME_YMDHIS."', {$sql_common}, site_id = '{$branch_site_id}' ");
 }
 else if ($w == 'u')
 {

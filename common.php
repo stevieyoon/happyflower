@@ -420,7 +420,7 @@ if ($_SESSION['ss_mb_id']) { // 로그인중이라면
             unset($row);
         }
     }
-    // master 관리자가 플랫폼 사이트에 관리자 권한으로 접속시 기록을 남기가 위해 다시 한번 더 메인화면으로 보냄 (gnuwiz)
+    // master 관리자가 가맹점 사이트에 관리자 권한으로 접속시 기록을 남기기 위해 다시 한번 더 메인화면으로 보냄 (gnuwiz)
     if(isset($_GET[AUTO_LOGIN]) and $_GET[AUTO_LOGIN] === AUTO_LOGIN_KEY) {
 
         $member = get_member($config['cf_admin']);

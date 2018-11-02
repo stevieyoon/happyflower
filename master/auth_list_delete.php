@@ -26,7 +26,7 @@ for ($i=0; $i<$count; $i++)
     $mb_id = preg_replace('/[^a-zA-Z0-9_]/', '', $_POST['mb_id'][$k]);
     $au_menu = preg_replace('/[^a-zA-Z0-9_]/', '', $_POST['au_menu'][$k]);
 
-    $sql = " delete from {$g5['auth_table']} where mb_id = '".$mb_id."' and au_menu = '".$au_menu."' ";
+    $sql = " delete from {$g5['auth_table']} where mb_id = '".$mb_id."' and au_menu = '".$au_menu."' and site_id = '{$site_id}' ";
     sql_query($sql);
 }
 
